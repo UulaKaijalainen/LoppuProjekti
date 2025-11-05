@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Routes, Route, Link, Navigate } from "react-router-dom";
+
 import './App.css'
 import Register from './Register.jsx'
 import Login from './Login.jsx'
@@ -9,13 +8,20 @@ function App() {
 
   return (
     <>
-      <Login />
-      <Register />
-      <div>
-        <h1>Confession Board</h1>
-        </div>
+      <nav>
+        <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </>
   )
 }
 
 export default App
+
+
+
