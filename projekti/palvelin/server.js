@@ -36,6 +36,7 @@ const db = mariadb.createPool({
 });
 
 app.get('/', (req, res) => {
+    console.log('Received request at /', req.body);
     res.send('Server is running');
 
 });
@@ -65,7 +66,7 @@ app.post('/register', async (req, res)=>{
           console.log('hash toimii',passwordHash)
         const [result] = await db.query(
             'INSERT INTO users (username, password_hash, email, age, city, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
-            [username, password, email, age, city]
+            [username, passwordHash, email, age, city]
         );
 
 
@@ -77,7 +78,6 @@ app.post('/register', async (req, res)=>{
 
     
 
-   return ('/login') 
 });
 
 
@@ -95,26 +95,25 @@ app.post("/login", async (req, res) => {
 
   try {
     // Get user from database
-    const users = await pool.query(
-      "SELECT id, username, password_hash FROM users WHERE username = ?",
-      [username]
-    );
+    const rows = await db.query("SELECT username, password_hash FROM users WHERE username = ?",[username]);
 
-    if (users.length === 0) {
+    if (!rows || rows.length === 0) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
 
-    const user = users[0];
-    
-    // For now, simple password check (we should use bcrypt in production)
-    if (password === user.password_hash) {
-      // Don't send password back to client
-      delete user.password_hash;
-      res.json({ user });
-    } else {
-      res.status(401).json({ error: "Invalid username or password" });
+    const userRow = rows[0];
+
+    const ok = await bcrypt.compare(password, userRow.password_hash);
+    if (!ok) {
+      return res.status(401).json({ error: "Invalid username or password" });
     }
-  } catch (err) {
+
+    const user = { username: userRow.username };
+
+    return res.json({ user });
+    
+    }
+   catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: "Internal server error" });
   }
