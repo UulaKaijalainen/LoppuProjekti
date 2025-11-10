@@ -85,6 +85,41 @@ app.post('/register', async (req, res)=>{
 app.get('/login', async (req, res) => {
     const { username, password } = req.body;})
 
+    // Login
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are required" });
+  }
+
+  try {
+    // Get user from database
+    const users = await pool.query(
+      "SELECT id, username, password_hash FROM users WHERE username = ?",
+      [username]
+    );
+
+    if (users.length === 0) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    const user = users[0];
+    
+    // For now, simple password check (we should use bcrypt in production)
+    if (password === user.password_hash) {
+      // Don't send password back to client
+      delete user.password_hash;
+      res.json({ user });
+    } else {
+      res.status(401).json({ error: "Invalid username or password" });
+    }
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const PORT = process.env.PORT1 || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 
