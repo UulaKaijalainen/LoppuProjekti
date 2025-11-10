@@ -67,12 +67,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `age` int(11) DEFAULT NULL,
   `city` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table confessionboard.users: ~0 rows (suunnilleen)
+-- Dumping data for table confessionboard.users: ~6 rows (suunnilleen)
 DELETE FROM `users`;
+INSERT INTO `users` (`id`, `username`, `password_hash`, `age`, `city`, `created_at`, `email`) VALUES
+	(1, 'fqfqqf', 'fafafa', 15, 'heheehh', '2025-11-07 10:51:09', '1e9e29@da.com'),
+	(2, 'riue', 'fafafa', 16, 'dhahfs', '2025-11-10 07:29:39', 'ufwuuwf@da.com'),
+	(3, 'dafafewew', 'fafafa', 17, 'scvsv', '2025-11-10 08:16:00', 'dawdad@dald.com'),
+	(4, 'r3wwrwfw', '123456', 18, 'helsinki', '2025-11-10 10:18:22', 'dadadawdad@gmail.com'),
+	(5, 'Matias2007', '$2b$10$RULMiPBaQ.ELvu2woeCOruJU5WqAEqqcbVi3VjeXeTPwyyk7cE78u', 18, 'Helsinki', '2025-11-10 10:36:17', 'matiasholmber07@gmail.com'),
+	(6, 'Kolve', '$2b$10$e4gI603M9MiAavg7lAi3iOU7reBtX/y8ZF9Q1mkOX9riyVajK1QCK', 18, 'Helsinki', '2025-11-10 10:42:26', 'veeti.kojonen@edu.bc.fi');
 
 -- Dumping structure for taulu confessionboard.votes
 DROP TABLE IF EXISTS `votes`;
