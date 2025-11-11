@@ -83,7 +83,8 @@ app.post('/register', async (req, res)=>{
 
 
 app.get('/login', async (req, res) => {
-    const { username, password } = req.body;})
+    const { username, password } = req.body;
+});
 
     // Login
 app.post("/login", async (req, res) => {
@@ -117,6 +118,27 @@ app.post("/login", async (req, res) => {
     console.error('Login error:', err);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+
+/*app.get('/confessions', async (req, res) => {
+      const { user}
+});*/
+
+app.post('/confessions', async (req, res) => {
+  const { user, confession } = req.body;
+
+  try{
+
+const [result] = await db.query(
+            'INSERT INTO users (username, confession, upvote, downvote, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
+            [username, confession, upvote, downvote]
+        );
+        res.status(201).json({message: 'Confession submitted successfully', id: result.insertId});
+    }catch(err){
+        console.error('Confession submission error:', err);
+        res.status(500).json({error: 'Internal server error'});
+        }
 });
 
 const PORT = process.env.PORT1 || 3000;

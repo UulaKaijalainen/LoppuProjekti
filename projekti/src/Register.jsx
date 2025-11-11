@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 function Register() {
     const [username, setUsername] = useState('');  
     const [password, setPassword] = useState('');
@@ -48,10 +49,12 @@ function Register() {
             }
 
             alert('Registration successful!');
+            
         } catch (error) {
             setErr(error.message);
         } finally {
             setLoad(false);
+            return <Redirect to='/login'  />;
         }
     };
 
