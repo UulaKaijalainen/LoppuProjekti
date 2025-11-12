@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Confessions(){
+function Confessions({ user }){
     const [confession, setConfession] = useState('');
     const [confessions, setConfessions] = useState([]);
       const [load, setLoad] = useState(true);
@@ -21,11 +21,12 @@ function Confessions(){
             } catch (error) {
                 setErr(error.message);
             }
-        }
+        };
         
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErr('');
+        setLoad(true);
 
     try{
      const response = await fetch('http://localhost:3001/confessions', {
@@ -35,12 +36,14 @@ function Confessions(){
                 }, 
                 mode: 'cors',
                 body: JSON.stringify({
+                    username: user.username,
                     confession
+                    
                     })
             });
     if (!response.ok) {
                 const body = await response.json().catch(()=>({}));
-                throw new Error(body.error || 'Post failed');
+                throw new Error(body.error || 'Lähetys epäonnistui');
             }
             setConfession('');
             fetchConfessions();
@@ -48,6 +51,7 @@ function Confessions(){
             setErr(error.message);
         } finally {
             setLoad(false);
+            fetchConfessions();
         }
     };
 
@@ -61,11 +65,12 @@ function Confessions(){
              type="text"
              value ={confession} 
              onChange={(e) => setConfession(e.target.value)}
-             placeholder='Tell your darkest Sin'
+             placeholder='kerro salaisuutesi...'
              required
              />
-            <button type="submit" disabled={load}>
-                    {load ? 'Sending to police...' : 'Send'}
+            <button type="submit">
+                    Lähetä
+                    
                 </button>
         </form>
         </div>

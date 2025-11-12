@@ -54,7 +54,7 @@ function Register() {
             setErr(error.message);
         } finally {
             setLoad(false);
-            return <Redirect to='/login'  />;
+            
         }
     };
 

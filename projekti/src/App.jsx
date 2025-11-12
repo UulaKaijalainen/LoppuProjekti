@@ -41,7 +41,6 @@ function App() {
           <h2 className="text-xl font-semibold">Tervetuloa, {user.username}</h2>
           <p className="text-sm text-gray-600">Olet kirjautunut sisään.</p>
           <p>Sinut ohjataan Automaattisesti seuraavalle sivulle {countdown}</p>
-          <button onClick={handleLogout} className="mt-4 px-3 py-2 rounded bg-red-500 text-white">Kirjaudu ulos</button>
         </div>
   );
 
@@ -55,7 +54,6 @@ function App() {
       {user ? (
         <> 
         <button onClick={handleLogout}>Kirjaudu ulos</button>
-       <span>Tervetuloa, {user.username}!</span>
        </>
       ) : (
         <span>Et ole kirjautunut sisään.</span>

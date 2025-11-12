@@ -122,28 +122,33 @@ app.post("/login", async (req, res) => {
 
 
 app.get('/confessions', async (req, res) => {
+  
    try {
-        const rows = await db.query('SELECT id, username, confession, upvote, downvote, created_at FROM confessions ORDER BY created_at DESC');
+        const rows = await db.query('SELECT id, username, confession, created_at FROM confessions');
         res.json({ confessions: rows });
     } catch (err) {
         console.error('Fetching confessions error:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'virhe 500' });
     }
 });
 
 app.post('/confessions', async (req, res) => {
   const { username, confession } = req.body;
 
+  if (!username || !confession) {
+    return res.status(400).json({ error: 'Confessio puuttuu' });
+  }
+
   try{
 
-const [result] = await db.query(
-            'INSERT INTO users (username, confession, upvote, downvote, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
-            [username, confession, upvote, downvote]
+const result = await db.query(
+            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, NOW())',
+            [username, confession]
         );
-        res.status(201).json({message: 'Confession submitted successfully', id: result.insertId});
+        res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId});
     }catch(err){
-        console.error('Confession submission error:', err);
-        res.status(500).json({error: 'Internal server error'});
+        console.error('Confession lähetys epäonnistui', err);
+        res.status(500).json({error: 'Server errori ;C'});
         }
 });
 
