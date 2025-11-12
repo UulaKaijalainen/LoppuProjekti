@@ -121,12 +121,18 @@ app.post("/login", async (req, res) => {
 });
 
 
-/*app.get('/confessions', async (req, res) => {
-      const { user}
-});*/
+app.get('/confessions', async (req, res) => {
+   try {
+        const rows = await db.query('SELECT id, username, confession, upvote, downvote, created_at FROM confessions ORDER BY created_at DESC');
+        res.json({ confessions: rows });
+    } catch (err) {
+        console.error('Fetching confessions error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.post('/confessions', async (req, res) => {
-  const { user, confession } = req.body;
+  const { username, confession } = req.body;
 
   try{
 
