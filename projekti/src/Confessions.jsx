@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
+import './index.css'
 function Confessions({ user }){
-    const [confession, setConfession] = useState('');
-    const [confessions, setConfessions] = useState([]);
+    //const [confession, setConfession] = useState('');
+    const [confession, setConfession] = useState([]);
       const [load, setLoad] = useState(true);
         const [err, setErr] = useState('');
 
@@ -17,7 +17,7 @@ function Confessions({ user }){
                     throw new Error('Failed to fetch confessions');
                 }
                 const data = await response.json();
-                setConfessions(data.confessions || []);
+                setConfessions(data || []);
             } catch (error) {
                 setErr(error.message);
             }
@@ -45,7 +45,7 @@ function Confessions({ user }){
                 const body = await response.json().catch(()=>({}));
                 throw new Error(body.error || 'Lähetys epäonnistui');
             }
-            setConfession('');
+            setConfessions('');
             fetchConfessions();
         } catch (error) {
             setErr(error.message);
@@ -59,8 +59,8 @@ function Confessions({ user }){
         <>
         <div>
         <h2>Confession page</h2>
-        
-        <form onSubmit ={handleSubmit}>
+           
+        <form onSubmit={handleSubmit}>
             <input
              type="text"
              value ={confession} 

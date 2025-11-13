@@ -4,6 +4,7 @@ import './App.css'
 import Register from './Register.jsx'
 import Login from './Login.jsx'
 import Confessions from './Confessions.jsx'
+import Foorumi from './Foorumi.jsx'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,7 +32,7 @@ function App() {
       navigate('/confessions')
       return;
     }
-      const id = setTimeout(() => setCountdown(c => c - 1), 1000);
+      const id = setTimeout(() => setCountdown(c => c - 1), 100);
     return () => clearTimeout(id);
   }, [countdown, navigate]);
 
@@ -45,7 +46,7 @@ function App() {
   );
 
   
-
+//
   return (
     <>
       <nav>
@@ -65,6 +66,7 @@ function App() {
           <Route path="/confessions" element={user ? <Confessions user={user} /> : <Navigate to="/login " replace/>} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/foorumi" element={<Foorumi/> }/>
           
         </Routes>
       

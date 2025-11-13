@@ -125,7 +125,9 @@ app.get('/confessions', async (req, res) => {
   
    try {
         const rows = await db.query('SELECT id, username, confession, created_at FROM confessions');
-        res.json({ confessions: rows });
+        console.log(rows);
+        
+        res.json(rows);
     } catch (err) {
         console.error('Fetching confessions error:', err);
         res.status(500).json({ error: 'virhe 500' });
@@ -142,7 +144,7 @@ app.post('/confessions', async (req, res) => {
   try{
 
 const result = await db.query(
-            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, NOW())',
+            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, 0, 0, NOW())',
             [username, confession]
         );
         res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId});
