@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import './index.css'
+import './styles/Tyyli.css'
 function Foorumi() {
         const [confessions, setConfessions] = useState([]);
         const [load, setLoad] = useState(true);
@@ -43,15 +42,17 @@ function Foorumi() {
         
         <div>
             <h2>Foorumi</h2>
-            <div>
+            <div class='foorumContainer'>
             {confessions.map((item) => (
+            <div class='foorumKortti'>
                 <div key={item.id} >
-                    <p><strong>{item.username}</strong> sanoi:</p> 
+                    <p><strong>{item.username = 'Anonymous'}</strong> sanoi:</p> 
                     <p>{item.confession}</p>
                     
                 </div>
-            ))}
             </div>
+            ))}
+        </div>
         </div>
     )
 

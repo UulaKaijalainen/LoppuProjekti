@@ -1,6 +1,6 @@
 import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect, use  } from "react";
-import './App.css'
+import './styles/Tyyli.css'
 import Register from './Register.jsx'
 import Login from './Login.jsx'
 import Confessions from './Confessions.jsx'

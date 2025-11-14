@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './styles/Tyyli.css'
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -64,7 +64,7 @@ export default function Login({ onLogin }) {
                 className="w-full max-w-md bg-white rounded-2xl shadow-md p-8"
                 aria-labelledby="login-heading"
             >
-                <h1 id="login-heading" className="text-2xl font-semibold mb-6 text-center">
+                <h1 id="login-heading">
                     Kirjaudu sisään
                 </h1>
 

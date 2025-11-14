@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import './index.css'
+import './styles/Tyyli.css'
 function Confessions({ user }){
     //const [confession, setConfession] = useState('');
     const [confession, setConfession] = useState([]);
@@ -8,25 +8,6 @@ function Confessions({ user }){
         const [err, setErr] = useState('');
         const navigate2 = useNavigate();
 
-        /*useEffect(() => {
-            fetchConfessions();
-            if (!confession){
-            navigate2('/foorumi');}
-        }, []);
-
-        const fetchConfessions = async () => {
-            try {
-                const response = await fetch('http://localhost:3001/confessions');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch confessions');
-                }
-                const data = await response.json();
-                setConfession(data || []);
-            } catch (error) {
-                setErr(error.message);
-            }
-        };
-       */ 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErr('');

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './styles/Tyyli.css'
 
 function Register() {
     const [username, setUsername] = useState('');  

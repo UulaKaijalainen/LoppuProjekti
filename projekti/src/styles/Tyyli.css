@@ -1,0 +1,41 @@
+
+@media screen and (max-width: 479px)
+{
+    body{
+        font-size: 12px;
+        text-align: center;
+
+    }
+    h1{
+        font-size: 20px;
+        color: red;
+    }
+/* FOORUMI */
+    .container{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .foorumContainer{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .foorumKortti{
+        border: solid black;
+        border-radius: 10px;
+        display: flex;
+    }
+
+/* Confesssion */
+
+
+/* Login */
+/* Register */
+
+
+
+    @media screen and (max-width: 991px) {
+    
+    }
+}
