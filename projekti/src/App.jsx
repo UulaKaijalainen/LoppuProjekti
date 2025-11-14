@@ -1,5 +1,5 @@
 import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
-import { useState, useEffect  } from "react";
+import { useState, useEffect, use  } from "react";
 import './App.css'
 import Register from './Register.jsx'
 import Login from './Login.jsx'
@@ -10,6 +10,7 @@ function App() {
   const [user, setUser] = useState(null);
    const [countdown, setCountdown] = useState(null);
   const navigate = useNavigate();
+  
 
   const handleLogin = (userObj) => {
     setUser(userObj);
@@ -29,12 +30,15 @@ function App() {
     if (countdown == null) return;
     if (countdown === 0) {
       setCountdown(null);
-      navigate('/confessions')
+      navigate('/confessions');
+      
       return;
     }
       const id = setTimeout(() => setCountdown(c => c - 1), 100);
     return () => clearTimeout(id);
   }, [countdown, navigate]);
+
+  
 
   const Welcome = () => (
     
@@ -66,7 +70,7 @@ function App() {
           <Route path="/confessions" element={user ? <Confessions user={user} /> : <Navigate to="/login " replace/>} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/foorumi" element={<Foorumi/> }/>
+          <Route path="/foorumi" element={<Foorumi />} />
           
         </Routes>
       

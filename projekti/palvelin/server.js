@@ -136,6 +136,8 @@ app.get('/confessions', async (req, res) => {
 
 app.post('/confessions', async (req, res) => {
   const { username, confession } = req.body;
+  console.log(username, confession);
+  
 
   if (!username || !confession) {
     return res.status(400).json({ error: 'Confessio puuttuu' });
@@ -144,10 +146,10 @@ app.post('/confessions', async (req, res) => {
   try{
 
 const result = await db.query(
-            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, 0, 0, NOW())',
+            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, NOW())',
             [username, confession]
         );
-        res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId});
+        res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId.toString()});
     }catch(err){
         console.error('Confession lähetys epäonnistui', err);
         res.status(500).json({error: 'Server errori ;C'});

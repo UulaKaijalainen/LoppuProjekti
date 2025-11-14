@@ -5,6 +5,7 @@ function Foorumi() {
         const [confessions, setConfessions] = useState([]);
         const [load, setLoad] = useState(true);
         const [err, setErr] = useState('');
+        
     
 
       useEffect(() => {
@@ -36,6 +37,7 @@ function Foorumi() {
                     
                         })
             });*/
+            //<p>{item.created_at}</p>
 
     return(
         
@@ -46,6 +48,7 @@ function Foorumi() {
                 <div key={item.id} >
                     <p><strong>{item.username}</strong> sanoi:</p> 
                     <p>{item.confession}</p>
+                    
                 </div>
             ))}
             </div>

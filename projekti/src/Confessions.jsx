@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './index.css'
 function Confessions({ user }){
     //const [confession, setConfession] = useState('');
     const [confession, setConfession] = useState([]);
       const [load, setLoad] = useState(true);
         const [err, setErr] = useState('');
+        const navigate2 = useNavigate();
 
-        useEffect(() => {
+        /*useEffect(() => {
             fetchConfessions();
+            if (!confession){
+            navigate2('/foorumi');}
         }, []);
 
         const fetchConfessions = async () => {
@@ -17,16 +21,17 @@ function Confessions({ user }){
                     throw new Error('Failed to fetch confessions');
                 }
                 const data = await response.json();
-                setConfessions(data || []);
+                setConfession(data || []);
             } catch (error) {
                 setErr(error.message);
             }
         };
-        
+       */ 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErr('');
         setLoad(true);
+        
 
     try{
      const response = await fetch('http://localhost:3001/confessions', {
@@ -34,27 +39,29 @@ function Confessions({ user }){
                 headers: {
                     'Content-Type': 'application/json'
                 }, 
-                mode: 'cors',
+                //mode: 'cors',
                 body: JSON.stringify({
                     username: user.username,
                     confession
                     
                     })
             });
+           const data = await response.json();
+           console.log(response);
+           
+            
     if (!response.ok) {
-                const body = await response.json().catch(()=>({}));
                 throw new Error(body.error || 'Lähetys epäonnistui');
             }
-            setConfessions('');
-            fetchConfessions();
+    if(response.ok){
+        navigate2('/foorumi');
+    }
+           /* setConfessions('');
+            fetchConfessions();*/
         } catch (error) {
             setErr(error.message);
-        } finally {
-            setLoad(false);
-            fetchConfessions();
-        }
+    }
     };
-
     return(
         <>
         <div>
