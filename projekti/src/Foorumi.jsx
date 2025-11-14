@@ -40,11 +40,11 @@ function Foorumi() {
 
     return(
         
-        <div>
+        <div className='foorumPage'>
             <h2>Foorumi</h2>
-            <div class='foorumContainer'>
+            <div className='foorumContainer'>
             {confessions.map((item) => (
-            <div class='foorumKortti'>
+            <div className='foorumKortti'>
                 <div key={item.id} >
                     <p><strong>{item.username = 'Anonymous'}</strong> sanoi:</p> 
                     <p>{item.confession}</p>

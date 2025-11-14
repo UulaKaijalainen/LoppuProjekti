@@ -34,7 +34,7 @@ function App() {
       
       return;
     }
-      const id = setTimeout(() => setCountdown(c => c - 1), 100);
+      const id = setTimeout(() => setCountdown(c => c - 1), 1000);
     return () => clearTimeout(id);
   }, [countdown, navigate]);
 
@@ -42,7 +42,7 @@ function App() {
 
   const Welcome = () => (
     
-    <div className="p-6">
+    <div className="welcomeContainer">
           <h2 className="text-xl font-semibold">Tervetuloa, {user.username}</h2>
           <p className="text-sm text-gray-600">Olet kirjautunut sisään.</p>
           <p>Sinut ohjataan Automaattisesti seuraavalle sivulle {countdown}</p>

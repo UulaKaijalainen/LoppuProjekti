@@ -58,7 +58,7 @@ export default function Login({ onLogin }) {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+        <div class="containerLogin">
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-md bg-white rounded-2xl shadow-md p-8"
@@ -74,29 +74,34 @@ export default function Login({ onLogin }) {
                     </div>
                 )}
 
-                <label className="block mb-4">
+                <div className="mb-4">
                     <span className="text-sm font-medium">Käyttäjänimi</span>
                     <input
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-200 p-2"
+                        className="containerLogin2"
+                        id='UserInp'
                         autoComplete="username"
                         required
+                        
                     />
-                </label>
+                </div>
 
-                <label className="block mb-6">
+                <div className="mb-6">
                     <span className="text-sm font-medium">Salasana</span>
                     <input
+                    
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-200 p-2"
+                        className="containerLogin2"
                         autoComplete="current-password"
+                        style={{ backgroundColor: "#0000" }}
+                        
                         required
                     />
-                </label>
+                </div>
 
                 <button
                     type="submit"

@@ -45,15 +45,16 @@ function Confessions({ user }){
     };
     return(
         <>
-        <div>
+        <div className='confessionContainer'>
         <h2>Confession page</h2>
            
         <form onSubmit={handleSubmit}>
-            <input
-             type="text"
+            <textarea
+             type="field"
              value ={confession} 
              onChange={(e) => setConfession(e.target.value)}
              placeholder='kerro salaisuutesi...'
+             className='confessionInput'
              required
              />
             <button type="submit">
