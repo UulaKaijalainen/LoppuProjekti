@@ -59,10 +59,13 @@ function Register() {
     };
 
     return (
-        <>
+        <div className="registerPage">
             <h1>Register</h1>
             {err && <div className="error">{err}</div>}
+            <div className='registerContainer'>
             <form onSubmit={handleSubmit}>
+                <div className="rekisteriKortti">
+                <label >Nimi:</label>
                 <input 
                     type="text" 
                     value={username} 
@@ -70,6 +73,9 @@ function Register() {
                     placeholder="Username" 
                     required 
                 />
+                </div>
+                <div className="rekisteriKortti">
+                <label >Salasana:</label>
                 <input 
                     type="password" 
                     value={password} 
@@ -77,6 +83,9 @@ function Register() {
                     placeholder="Password" 
                     required 
                 />
+                </div>
+                <div className="rekisteriKortti">
+                <label >Vahvista Salasana:</label>
                 <input 
                     type="password" 
                     value={confirmPassword} 
@@ -84,7 +93,9 @@ function Register() {
                     placeholder="Confirm Password" 
                     required 
                 />
-
+                </div>
+                <div className="rekisteriKortti">
+                <label > Sähköposti:</label>
                 <input 
                     type="email" 
                     value={email} 
@@ -92,6 +103,9 @@ function Register() {
                     placeholder="Email" 
                     required 
                 />
+                </div>
+                <div className="rekisteriKortti">
+                <label >Ikä:</label>
                 <input 
                     type="number" 
                     value={age} 
@@ -99,6 +113,9 @@ function Register() {
                     placeholder="Age" 
                     required 
                 />
+                </div>
+                <div className="rekisteriKortti">
+                <label >Kaupunki:</label>
                 <input 
                     type="text" 
                     value={city} 
@@ -106,11 +123,13 @@ function Register() {
                     placeholder="City" 
                     required 
                 />
+                </div>
                 <button type="submit" disabled={load}>
                     {load ? 'Registering...' : 'Register'}
                 </button>
             </form>
-        </>
+            </div>
+        </div>
     );
 }
 
