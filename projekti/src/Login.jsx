@@ -58,7 +58,7 @@ export default function Login({ onLogin }) {
     };
 
     return (
-        <div class="containerLogin">
+        <div className="containerLogin">
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-md bg-white rounded-2xl shadow-md p-8"

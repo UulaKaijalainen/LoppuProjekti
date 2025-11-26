@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import './styles/Tyyli.css'
 function Confessions({ user }){
-    //const [confession, setConfession] = useState('');
-    const [confession, setConfession] = useState([]);
-      const [load, setLoad] = useState(true);
+    const [confession, setConfession] = useState('');
+    //const [confession, setConfession] = useState([]);
+      const [load, setLoad] = useState(false);
         const [err, setErr] = useState('');
         const navigate2 = useNavigate();
 
@@ -32,7 +32,7 @@ function Confessions({ user }){
            
             
     if (!response.ok) {
-                throw new Error(body.error || 'Lähetys epäonnistui');
+                throw new Error(data.error || 'Lähetys epäonnistui');
             }
     if(response.ok){
         navigate2('/foorumi');
@@ -45,6 +45,7 @@ function Confessions({ user }){
     };
     return(
         <>
+        <button onClick={() => navigate2('/foorumi')}>Foorumi</button>
         <div className='confessionContainer'>
         <h2>Confession page</h2>
            

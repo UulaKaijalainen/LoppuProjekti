@@ -34,7 +34,7 @@ function App() {
       
       return;
     }
-      const id = setTimeout(() => setCountdown(c => c - 1), 1000);
+      const id = setTimeout(() => setCountdown(c => c - 1), 100);
     return () => clearTimeout(id);
   }, [countdown, navigate]);
 
@@ -70,8 +70,7 @@ function App() {
           <Route path="/confessions" element={user ? <Confessions user={user} /> : <Navigate to="/login " replace/>} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/foorumi" element={<Foorumi />} />
-          
+<Route path="/foorumi" element={user ? <Foorumi user={user} /> : <Navigate to="/login" replace />} />          
         </Routes>
       
     </>

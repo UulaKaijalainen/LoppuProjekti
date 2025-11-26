@@ -96,7 +96,7 @@ app.post("/login", async (req, res) => {
 
   try {
     // Get user from database
-    const rows = await db.query("SELECT username, password_hash FROM users WHERE username = ?",[username]);
+    const rows = await db.query("SELECT id, username, password_hash FROM users WHERE username = ?",[username]);
 
     if (!rows || rows.length === 0) {
       return res.status(401).json({ error: "Invalid username or password" });
@@ -109,9 +109,10 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid username or password" });
     }
 
-    const user = { username: userRow.username };
-
+    const user = { id: userRow.id, username: userRow.username };
     return res.json({ user });
+
+    
     
     }
    catch (err) {
@@ -122,15 +123,52 @@ app.post("/login", async (req, res) => {
 
 
 app.get('/confessions', async (req, res) => {
-  
+    const userId = req.session?.userId || null;
+
    try {
-        const rows = await db.query('SELECT id, username, confession, created_at FROM confessions');
-        console.log(rows);
+    const rows = await db.query('SELECT id, username, confession, upvote, downvote, created_at FROM confessions ORDER BY created_at DESC');
+        //console.log(rows);
         
-        res.json(rows);
+        res.json({confessions:rows});
     } catch (err) {
         console.error('Fetching confessions error:', err);
         res.status(500).json({ error: 'virhe 500' });
+    }
+});
+app.get('/confessions/:id', async (req, res) => {
+    const confessionId = req.params.id;
+
+    try {
+        // ----- GET CONFESSION -----
+        const confResult = await db.query(
+            "SELECT * FROM confessions WHERE id = ?",
+            [confessionId]
+        );
+
+        const confRows = Array.isArray(confResult) ? confResult : [];
+if (!confRows || confRows.length === 0) {
+    return res.status(404).json({ error: "Not found" });
+}
+const confession = confRows[0];
+
+        // ----- GET SCORE -----
+        const scoreResult = await db.query(`
+            SELECT SUM(vote_type) AS score
+            FROM votes
+            WHERE confession_id = ?
+        `, [confessionId]);
+
+       
+const score = Number(scoreResult[0]?.score) || 0;
+
+        res.json({
+            ...confession,
+            score
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
     }
 });
 
@@ -146,7 +184,7 @@ app.post('/confessions', async (req, res) => {
   try{
 
 const result = await db.query(
-            'INSERT INTO confessions (username, confession, created_at) VALUES ( ?, ?, NOW())',
+      'INSERT INTO confessions (username, confession, upvote, downvote, created_at) VALUES (?, ?, 0, 0, NOW())',
             [username, confession]
         );
         res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId.toString()});
@@ -154,6 +192,132 @@ const result = await db.query(
         console.error('Confession lähetys epäonnistui', err);
         res.status(500).json({error: 'Server errori ;C'});
         }
+});
+
+app.post('/confessions/:id/upvote', async (req, res) => {
+    const confessionId = req.params.id;
+    const { userId } = req.body;
+
+    try {
+        await db.query(`
+            INSERT INTO votes (confession_id, user_id, vote_type)
+            VALUES (?, ?, 1)
+            ON DUPLICATE KEY UPDATE vote_type = 1
+        `, [confessionId, userId]);
+
+        console.log(`User ${userId} upvoted confession ${confessionId}`);
+
+        // Get updated score
+        const scoreResult = await db.query(`
+            SELECT 
+                SUM(vote_type) AS score,
+                COUNT(CASE WHEN vote_type = 1 THEN 1 END) AS upvotes,
+                COUNT(CASE WHEN vote_type = -1 THEN 1 END) AS downvotes
+            FROM votes
+            WHERE confession_id = ?
+        `, [confessionId]);
+
+        const scoreData = scoreResult[0] || { score: 0, upvotes: 0, downvotes: 0 };
+
+        // Convert BigInt to Number
+        const formattedScore = {
+            score: Number(scoreData.score) || 0,
+            upvotes: Number(scoreData.upvotes) || 0,
+            downvotes: Number(scoreData.downvotes) || 0
+        };
+
+        console.log(`Updated score for confession ${confessionId}:`, formattedScore);
+
+        res.json({ message: "Upvoted", ...formattedScore });
+
+    } catch (err) {
+        console.error('Upvote error:', err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+// DOWNVOTE
+app.post('/confessions/:id/downvote', async (req, res) => {
+    const confessionId = req.params.id;
+    const { userId } = req.body;
+
+    try {
+        await db.query(`
+            INSERT INTO votes (confession_id, user_id, vote_type)
+            VALUES (?, ?, -1)
+            ON DUPLICATE KEY UPDATE vote_type = -1
+        `, [confessionId, userId]);
+
+        console.log(`User ${userId} downvoted confession ${confessionId}`);
+
+        const scoreResult = await db.query(`
+            SELECT 
+                SUM(vote_type) AS score,
+                COUNT(CASE WHEN vote_type = 1 THEN 1 END) AS upvotes,
+                COUNT(CASE WHEN vote_type = -1 THEN 1 END) AS downvotes
+            FROM votes
+            WHERE confession_id = ?
+        `, [confessionId]);
+
+        const scoreData = scoreResult[0] || { score: 0, upvotes: 0, downvotes: 0 };
+
+        // Convert BigInt to Number
+        const formattedScore = {
+            score: Number(scoreData.score) || 0,
+            upvotes: Number(scoreData.upvotes) || 0,
+            downvotes: Number(scoreData.downvotes) || 0
+        };
+
+        console.log(`Updated score for confession ${confessionId}:`, formattedScore);
+
+        res.json({ message: "Downvoted", ...formattedScore });
+
+    } catch (err) {
+        console.error('Downvote error:', err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+app.get('/votes/:confessionId', async (req, res) => {
+    const confessionId = req.params.confessionId;
+
+    try {
+        const scoreResult = await db.query(`
+            SELECT 
+                SUM(vote_type) AS score,
+                COUNT(CASE WHEN vote_type = 1 THEN 1 END) AS upvotes,
+                COUNT(CASE WHEN vote_type = -1 THEN 1 END) AS downvotes
+            FROM votes
+            WHERE confession_id = ?
+        `, [confessionId]);
+
+        const scoreData = scoreResult[0] || { score: 0, upvotes: 0, downvotes: 0 };
+
+        res.json({
+    score: Number(scoreData.score) || 0,
+    upvotes: Number(scoreData.upvotes) || 0,
+    downvotes: Number(scoreData.downvotes) || 0
+});
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+app.get('/votes/:confessionId/:userId', async (req, res) => {
+    const { confessionId, userId } = req.params;
+    try {
+        const [voteRow] = await db.query(
+            "SELECT vote_type FROM votes WHERE confession_id = ? AND user_id = ?",
+            [confessionId, userId]
+        );
+
+        res.json({
+            vote_type: voteRow ? voteRow.vote_type : 0
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
 });
 
 const PORT = process.env.PORT1 || 3000;
