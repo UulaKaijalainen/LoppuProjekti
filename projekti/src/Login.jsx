@@ -111,7 +111,6 @@ export default function Login({ onLogin }) {
                     {loading ? 'Kirjaudutaan...' : 'Kirjaudu'}
                 </button>
 
-                <p className="text-xs text-gray-500 mt-4 text-center">Käytä: admin / password: password</p>
             </form>
         </div>
     );

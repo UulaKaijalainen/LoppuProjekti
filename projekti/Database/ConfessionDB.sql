@@ -30,9 +30,9 @@ CREATE TABLE IF NOT EXISTS `confessions` (
   `upvote` int(11) DEFAULT 0,
   `downvote` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table confessionboard.confessions: ~78 rows (suunnilleen)
+-- Dumping data for table confessionboard.confessions: ~123 rows (suunnilleen)
 DELETE FROM `confessions`;
 INSERT INTO `confessions` (`id`, `username`, `confession`, `created_at`, `upvote`, `downvote`) VALUES
 	(22, 'Kolve', 'haloooooooooo', '2025-11-14 12:52:17', 0, 2),
@@ -126,7 +126,38 @@ INSERT INTO `confessions` (`id`, `username`, `confession`, `created_at`, `upvote
 	(110, 'Kolve', 'sdada', '2025-11-24 10:48:27', 0, 0),
 	(111, 'Kolve', 'fssffsfs', '2025-11-24 10:49:38', 0, 0),
 	(112, 'Kolve', 'e2qdada', '2025-11-24 10:49:52', 0, 0),
-	(113, 'Kolve', 'cadadada', '2025-11-24 10:52:32', 0, 0);
+	(113, 'Kolve', 'cadadada', '2025-11-24 10:52:32', 0, 0),
+	(114, 'Kolve', 'addadadadad', '2025-11-24 11:17:29', 0, 0),
+	(115, 'Kolve', 'FSFSFSFS', '2025-11-24 11:20:45', 0, 0),
+	(116, 'Kolve', 'fsfsfsfs', '2025-11-24 11:24:07', 0, 0),
+	(117, 'Kolve', 'dadada', '2025-11-24 11:28:38', 0, 0),
+	(118, 'Kolve', 'acacacaca', '2025-11-24 11:30:59', 0, 0),
+	(119, 'Kolve', 'csszcs', '2025-11-24 11:36:45', 0, 0),
+	(120, 'Kolve', 'czcczczzc', '2025-11-24 11:41:18', 0, 0),
+	(121, 'Matias2007', 'dadadadad', '2025-11-24 11:42:35', 0, 0),
+	(122, 'Kolve', 'accacacacaca', '2025-11-24 11:47:35', 0, 0),
+	(123, 'Kolve', 'addada', '2025-11-24 11:52:33', 0, 0),
+	(124, 'Kolve', 'acccaca', '2025-11-24 11:54:11', 0, 0),
+	(125, 'Kolve', 'fsfsfsfsfs', '2025-11-24 12:01:30', 0, 0),
+	(126, 'Kolve', 'aadadadda', '2025-11-24 12:05:30', 0, 0),
+	(127, 'Kolve', 'daddadada', '2025-11-24 12:05:50', 0, 0),
+	(128, 'Kolve', 'aaddaaddada', '2025-11-24 12:08:54', 0, 0),
+	(129, 'Kolve', 'adadadadadada', '2025-11-24 12:10:07', 0, 0),
+	(130, 'Kolve', 'dadadadada', '2025-11-24 12:11:45', 0, 0),
+	(131, 'Kolve', 'adadadadada', '2025-11-24 12:15:03', 0, 0),
+	(132, 'Kolve', 'fssffsfs', '2025-11-25 07:21:43', 0, 0),
+	(133, 'Kolve', 'dadadada', '2025-11-25 07:38:55', 0, 0),
+	(134, 'Kolve', 'aaddada', '2025-11-25 07:39:49', 0, 0),
+	(135, 'Kolve', 'afffafafa', '2025-11-25 07:43:59', 0, 0),
+	(136, 'Kolve', 'dadadadada', '2025-11-25 07:47:18', 0, 0),
+	(137, 'Kolve', 'addadada', '2025-11-25 08:16:40', 0, 0),
+	(138, 'Kolve', 'addajadhda', '2025-11-25 08:20:32', 0, 0),
+	(139, 'Kolve', 'cacacacaca', '2025-11-25 08:20:54', 0, 0),
+	(140, 'Kolve', 'adadaadda', '2025-11-26 07:53:03', 0, 0),
+	(141, 'Kolve', 'addadadada', '2025-11-26 07:53:27', 0, 0),
+	(142, 'Kolve', 'dadadada', '2025-11-26 08:12:40', 0, 0),
+	(143, 'Kolve', 'dadadadada', '2025-11-26 08:15:36', 0, 0),
+	(144, 'Kolve', 'wqddqlda', '2025-11-26 08:17:50', 0, 0);
 
 -- Dumping structure for taulu confessionboard.reports
 DROP TABLE IF EXISTS `reports`;
@@ -192,9 +223,9 @@ CREATE TABLE IF NOT EXISTS `votes` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_vote` (`confession_id`,`user_id`),
   CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`confession_id`) REFERENCES `confessions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table confessionboard.votes: ~16 rows (suunnilleen)
+-- Dumping data for table confessionboard.votes: ~51 rows (suunnilleen)
 DELETE FROM `votes`;
 INSERT INTO `votes` (`id`, `confession_id`, `user_id`, `vote_type`, `created_at`) VALUES
 	(1, 93, 6, -1, '2025-11-20 09:44:44'),
@@ -217,7 +248,40 @@ INSERT INTO `votes` (`id`, `confession_id`, `user_id`, `vote_type`, `created_at`
 	(18, 102, 6, 1, '2025-11-24 08:24:00'),
 	(19, 103, 6, 1, '2025-11-24 08:24:01'),
 	(20, 106, 6, -1, '2025-11-24 09:56:43'),
-	(21, 107, 6, 1, '2025-11-24 10:07:52');
+	(21, 107, 6, 1, '2025-11-24 10:07:52'),
+	(22, 113, 6, -1, '2025-11-24 11:17:00'),
+	(29, 114, 6, -1, '2025-11-24 11:17:31'),
+	(33, 115, 6, 1, '2025-11-24 11:20:47'),
+	(36, 116, 6, 1, '2025-11-24 11:24:21'),
+	(38, 117, 6, -1, '2025-11-24 11:28:40'),
+	(44, 118, 6, 1, '2025-11-24 11:31:01'),
+	(49, 119, 6, 1, '2025-11-24 11:36:46'),
+	(57, 111, 6, -1, '2025-11-24 11:37:01'),
+	(62, 120, 6, -1, '2025-11-24 11:41:21'),
+	(63, 120, 5, -1, '2025-11-24 11:42:38'),
+	(64, 122, 6, 1, '2025-11-24 11:47:38'),
+	(65, 123, 6, 1, '2025-11-24 11:52:35'),
+	(69, 124, 6, -1, '2025-11-24 11:54:12'),
+	(70, 121, 6, -1, '2025-11-24 11:55:35'),
+	(71, 125, 6, -1, '2025-11-24 12:01:31'),
+	(73, 126, 6, -1, '2025-11-24 12:05:31'),
+	(74, 127, 6, 1, '2025-11-24 12:05:51'),
+	(76, 128, 6, -1, '2025-11-24 12:08:55'),
+	(77, 129, 6, -1, '2025-11-24 12:10:08'),
+	(78, 130, 6, -1, '2025-11-24 12:11:46'),
+	(79, 131, 6, 1, '2025-11-24 12:15:04'),
+	(93, 132, 6, -1, '2025-11-25 07:21:45'),
+	(94, 135, 6, 1, '2025-11-25 07:44:01'),
+	(96, 136, 6, 1, '2025-11-25 07:47:20'),
+	(103, 137, 6, -1, '2025-11-25 08:16:42'),
+	(104, 141, 6, 1, '2025-11-26 07:53:28'),
+	(106, 140, 6, -1, '2025-11-26 07:53:30'),
+	(107, 139, 6, 1, '2025-11-26 07:53:31'),
+	(111, 142, 6, -1, '2025-11-26 08:12:42'),
+	(114, 143, 6, 1, '2025-11-26 08:15:37'),
+	(117, 144, 6, -1, '2025-11-26 08:17:52'),
+	(125, 144, 5, 1, '2025-11-26 08:35:22'),
+	(135, 143, 5, -1, '2025-11-26 08:35:55');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

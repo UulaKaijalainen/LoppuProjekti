@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './styles/Tyyli.css'
+import './styles/Tyyli2.css'
 import Vote from './Vote';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
 export default function Foorumi({ user }) {
     const [confessions, setConfessions] = useState([]);
 
@@ -24,12 +29,15 @@ export default function Foorumi({ user }) {
                 {confessions.map(item => (
                     <div key={item.id} className="foorumKortti">
                         <p><strong>Anonymous</strong> sanoi:</p>
-                        <p>{item.confession}</p>
+                        
+                        <div className='conf-container-foorumi1'>
+                        <div className="conf-container-foorumi2"><p>{item.confession}</p></div>
 
                         {/* IMPORTANT: fixed */}
-                        <Vote confessionId={item.id} userId={user?.id} />
-
-                        <small>{new Date(item.created_at).toLocaleString()}</small>
+                        <Vote confessionId={item.id} userId={user?.id} /></div>
+                        <div className='conf-container-foorumi3'>
+                        <small>{dayjs(item.created_at).fromNow()}</small>
+                        </div>
                     </div>
                 ))}
             </div>

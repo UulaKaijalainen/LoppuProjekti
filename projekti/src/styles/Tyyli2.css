@@ -1,0 +1,153 @@
+/* ===========================
+           FOORUMI
+=========================== */
+
+
+body {
+    background-color: #006eff00;
+
+}
+
+.foorumPage{
+    color: rgb(238, 238, 238);
+    text-align: center;
+}
+.foorumContainer {
+    display: flex;
+    flex-direction: column;
+    max-height: 540px;
+        overflow: auto;
+
+    
+    
+}
+.foorumKortti{
+    text-align: left;
+    background-color: #393e4649;
+    border-radius: 15px;
+    border: solid rgba(0, 0, 0, 0)  ;
+    margin-top:10px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.bi {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 24px !important;
+}
+
+.upVoteButton, .downVoteButton {
+    background: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: white;
+}
+.conf-container-foorumi1{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.voteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    margin-right: 10px;
+    float: inline-end;
+}
+.conf-container-foorumi2{
+    margin-left: 2%;
+    margin-right: 2%;
+    max-width: 270px;
+    min-width: 270px;
+    word-wrap: break-word;
+    max-height: 140px;
+    overflow: auto;
+}
+
+.conf-container-foorumi3{
+    text-align: right;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+@media screen and (min-width: 440px) {
+    body{background-color: red;}
+body {
+    background-color: #006eff00;
+}
+
+.foorumPage{
+    color: rgb(238, 238, 238);
+    text-align: center;
+}
+.foorumContainer {
+    display: grid;
+    grid-template-columns:  auto auto auto;
+
+    gap: 14px;
+    
+    
+}
+.foorumKortti{
+    text-align: left;
+    background-color: #393e4649;
+    border-radius: 15px;
+    border: solid rgba(0, 0, 0, 0)  ;
+    margin-top:10px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.bi {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 24px !important;
+}
+
+.upVoteButton, .downVoteButton {
+    background: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: white;
+}
+.conf-container-foorumi1{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.voteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    margin-right: 10px;
+    float: inline-end;
+}
+.conf-container-foorumi2{
+    margin-left: 2%;
+    margin-right: 2%;
+    max-width: 270px;
+    min-width: 270px;
+    word-wrap: break-word;
+    max-height: none;
+    overflow: auto;
+}
+
+.conf-container-foorumi3{
+    text-align: right;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+}

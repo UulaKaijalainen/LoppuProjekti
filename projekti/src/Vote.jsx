@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function Vote({ confessionId, userId }) {
     const [userVote, setUserVote] = useState(null);  // "up" | "down" | null
@@ -47,20 +48,20 @@ function Vote({ confessionId, userId }) {
 }
     return (
         <div className="voteContainer">
-            <button
+            <button className="upVoteButton"
                 onClick={() => handleVote("up")}
                 disabled={userVote === "up"}
             >
-                Up
+                <i className={userVote === "up" ? "bi bi-caret-up-fill" : "bi bi-caret-up"}></i>
             </button>
 
             <span>{score}</span>
 
-            <button
+            <button className="downVoteButton"
                 onClick={() => handleVote("down")}
                 disabled={userVote === "down"}
             >
-                Down
+<i className={userVote === "down" ? "bi bi-caret-down-fill" : "bi bi-caret-down"}></i>
             </button>
         </div>
     );

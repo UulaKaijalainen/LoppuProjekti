@@ -8,24 +8,14 @@ html, body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-body {
+html {
     min-height: 100vh;
-    background: conic-gradient(
-        from 45deg,
-        rgb(0, 19, 73) 0deg,
-        rgb(0, 28, 78) 30deg,
-        rgb(0, 36, 82) 60deg,
-        rgb(0, 44, 85) 90deg,
-        rgb(0, 53, 87) 120deg,
-        rgb(0, 61, 88) 150deg,
-        rgb(0, 69, 88) 180deg,
-        rgb(0, 76, 87) 210deg,
-        rgb(0, 84, 85) 240deg,
-        rgb(0, 91, 82) 270deg,
-        rgb(0, 98, 79) 300deg,
-        rgb(0, 105, 74) 330deg,
-        rgb(0, 111, 68) 360deg
-    );
+    background:linear-gradient(15deg, rgb(0, 88, 115) 0%, rgb(0, 88, 115) 2.941%, rgb(0, 88, 115) 2.941%, rgb(0, 88, 115) 5.882%, rgb(0, 87, 116) 5.882%, rgb(0, 87, 116) 8.824%, rgb(0, 86, 116) 8.824%, rgb(0, 86, 116) 11.765%, rgb(0, 86, 116) 11.765%, rgb(0, 86, 116) 14.706%, rgb(0, 85, 117) 14.706%, rgb(0, 85, 117) 17.647%, rgb(0, 84, 117) 17.647%, rgb(0, 84, 117) 20.588%, rgb(0, 82, 117) 20.588%, rgb(0, 82, 117) 23.529%, rgb(0, 81, 118) 23.529%, rgb(0, 81, 118) 26.471%, rgb(0, 80, 118) 26.471%, rgb(0, 80, 118) 29.412%, rgb(0, 79, 118) 29.412%, rgb(0, 79, 118) 32.353%, rgb(0, 77, 119) 32.353%, rgb(0, 77, 119) 35.294%, rgb(0, 75, 119) 35.294%, rgb(0, 75, 119) 38.235%, rgb(0, 74, 119) 38.235%, rgb(0, 74, 119) 41.176%, rgb(0, 72, 120) 41.176%, rgb(0, 72, 120) 44.118%, rgb(0, 70, 120) 44.118%, rgb(0, 70, 120) 47.059%, rgb(0, 68, 120) 47.059%, rgb(0, 68, 120) 50%, rgb(0, 66, 121) 50%, rgb(0, 66, 121) 52.941%, rgb(0, 64, 121) 52.941%, rgb(0, 64, 121) 55.882%, rgb(0, 62, 121) 55.882%, rgb(0, 62, 121) 58.824%, rgb(0, 60, 122) 58.824%, rgb(0, 60, 122) 61.765%, rgb(0, 58, 122) 61.765%, rgb(0, 58, 122) 64.706%, rgb(0, 56, 122) 64.706%, rgb(0, 56, 122) 67.647%, rgb(0, 53, 123) 67.647%, rgb(0, 53, 123) 70.588%, rgb(0, 51, 123) 70.588%, rgb(0, 51, 123) 73.529%, rgb(0, 49, 123) 73.529%, rgb(0, 49, 123) 76.471%, rgb(0, 46, 124) 76.471%, rgb(0, 46, 124) 79.412%, rgb(0, 44, 124) 79.412%, rgb(0, 44, 124) 82.353%, rgb(0, 41, 124) 82.353%, rgb(0, 41, 124) 85.294%, rgb(0, 39, 125) 85.294%, rgb(0, 39, 125) 88.235%, rgb(0, 36, 125) 88.235%, rgb(0, 36, 125) 91.176%, rgb(0, 34, 125) 91.176%, rgb(0, 34, 125) 94.118%, rgb(0, 31, 126) 94.118%, rgb(0, 31, 126) 97.059%, rgb(0, 29, 126) 97.059%, rgb(126, 0, 0) 100%);
+}
+
+body{ background-color: transparent;
+        overflow: auto;
+
 }
 
 
@@ -45,30 +35,6 @@ nav button {
 }
 
 
-/* ===========================
-           FOORUMI
-=========================== */
-
-
-.foorumPage{
-    color: rgb(238, 238, 238);
-    text-align: center;
-}
-.foorumContainer {
-    display: flex;
-    flex-direction: column;
-    
-    
-}
-.foorumKortti{
-    text-align: left;
-    background-color: #393e4649;
-    border-radius: 15px;
-    border: solid rgba(0, 0, 0, 0)  ;
-    margin-top:10px;
-    padding-left: 3px;
-    padding-right: 3px;
-}
 
 /* ===========================
             LOGIN
@@ -126,20 +92,8 @@ nav button {
     margin-left: 15%;
 }
 
-/* ===========================
-     Welcome Page
-=========================== */
 
-.welcomeContainer {
-    margin-top: 50%;
-    font-size: 20px;
-    text-align: center;
-    color: rgb(238, 238, 238);
-    background-color: rgba(51, 51, 51, 0.281);
-    border: solid rgba(0, 0, 0, 0);
-    border-radius: 15px;
 
-}
 
 /* ===========================
         Confession Page
@@ -226,27 +180,24 @@ nav button {
 @media screen and (min-width: 440px) {
 
     body {
-        background: conic-gradient(
-            from 45deg,
-            rgb(0, 19, 73) 0deg,
-            rgb(0, 28, 78) 30deg,
-            rgb(0, 36, 82) 60deg,
-            rgb(0, 44, 85) 90deg,
-            rgb(0, 53, 87) 120deg,
-            rgb(0, 61, 88) 150deg,
-            rgb(0, 69, 88) 180deg,
-            rgb(0, 76, 87) 210deg,
-            rgb(0, 84, 85) 240deg,
-            rgb(0, 91, 82) 270deg,
-            rgb(0, 98, 79) 300deg,
-            rgb(0, 105, 74) 330deg,
-            rgb(0, 111, 68) 360deg
-        );
+        overflow: hidden;
     }
 
     .containerLogin {
         width: 400px;
         margin: auto;
         margin-top: 8%;
+        align-items: center;
+    }
+
+    .containerLogin button {
+        font-size: 34px;
+        margin-left: 25%;
+    }
+
+    .mb-4, .mb-6{
+        display: block;
+        margin: 10%;
+        margin-bottom: 4%;
     }
 }
