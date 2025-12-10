@@ -77,6 +77,10 @@ body {
     margin-bottom: 5px;
 }
 
+.MoonRocket {
+    position: relative;
+}
+
 @media screen and (min-width: 440px) {
     body{background-color: red;}
 body {
