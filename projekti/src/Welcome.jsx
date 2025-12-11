@@ -19,8 +19,8 @@ export default function Welcome({ user }) {
 
   return (
     <div className="welcomeContainer">
-      <h2>Tervetuloa, {user.username}</h2>
-      <p>Sinut ohjataan automaattisesti seuraavalle sivulle {countdown}</p>
+      <h2>Welcome, {user.username}</h2>
+      <p>You will be automatically navigated to the next page in: {countdown}</p>
 
       <Hamster />
     </div>

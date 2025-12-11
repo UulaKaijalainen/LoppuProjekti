@@ -1,0 +1,70 @@
+.rekisteriKortti input, .rekisteriKortti select {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.42);
+    padding: 8px;
+    font-size: 16px;
+
+    border-radius: 10px;
+    color: rgba(155, 228, 255, 0.75);
+
+    
+}
+.registerContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: rgba(155, 155, 155, 0.946);
+
+}
+
+h1{
+        color: rgba(155, 228, 255, 0.75);
+
+}
+
+button{
+    background-color: #b3fbff2f;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+/* ===========================
+     RESPONSIVE (DESKTOP)
+=========================== */
+
+@media screen and (min-width: 440px) {
+    .registerContainer {
+        width: 60%;
+        margin: auto;
+       
+
+        margin-bottom: 5%;
+        align-items: center;
+    }
+
+    .rekisteriKortti {
+        font-size: 18px;
+        display: flex;
+        
+    gap: 10px;
+    }
+
+    .rekisteriKortti input[type="number"] {
+    color: white;
+    border: 1px solid #555;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+}

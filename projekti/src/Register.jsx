@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import './styles/Tyyli.css'
+import './styles/Tyyli3.css'
 
 function Register() {
     const [username, setUsername] = useState('');  
@@ -10,6 +12,7 @@ function Register() {
     const [city, setCity] = useState('');
     const [err, setErr] = useState('');
     const [load, setLoad] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,7 +52,7 @@ function Register() {
             }
 
             alert('Registration successful!');
-            
+            navigate('/login');
         } catch (error) {
             setErr(error.message);
         } finally {
@@ -65,27 +68,27 @@ function Register() {
             <div className='registerContainer'>
             <form onSubmit={handleSubmit}>
                 <div className="rekisteriKortti">
-                <label >Nimi:</label>
+                <label >Name:</label>
                 <input 
                     type="text" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
-                    placeholder="Username" 
+                    placeholder="USERNAME" 
                     required 
                 />
                 </div>
                 <div className="rekisteriKortti">
-                <label >Salasana:</label>
+                <label >Password:</label>
                 <input 
                     type="password" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
-                    placeholder="Password" 
+                    placeholder="PASSWORD" 
                     required 
                 />
                 </div>
                 <div className="rekisteriKortti">
-                <label >Vahvista Salasana:</label>
+                <label >Confirm password:</label>
                 <input 
                     type="password" 
                     value={confirmPassword} 
@@ -95,7 +98,7 @@ function Register() {
                 />
                 </div>
                 <div className="rekisteriKortti">
-                <label > Sähköposti:</label>
+                <label > Email:</label>
                 <input 
                     type="email" 
                     value={email} 
@@ -105,7 +108,7 @@ function Register() {
                 />
                 </div>
                 <div className="rekisteriKortti">
-                <label >Ikä:</label>
+                <label >Age:</label>
                 <input 
                     type="number" 
                     value={age} 
@@ -115,7 +118,7 @@ function Register() {
                 />
                 </div>
                 <div className="rekisteriKortti">
-                <label >Kaupunki:</label>
+                <label >City:</label>
                 <input 
                     type="text" 
                     value={city} 

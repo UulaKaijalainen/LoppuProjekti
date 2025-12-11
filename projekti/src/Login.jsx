@@ -11,10 +11,11 @@ export default function Login({ onLogin }) {
         // Attempt backend authentication
         try {
             const resp = await fetch('http://localhost:3001/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: "include",   // 🔥 REQUIRED
+    body: JSON.stringify({ username, password }),
+});
 
             if (resp.ok) {
                 const data = await resp.json();
@@ -46,7 +47,13 @@ export default function Login({ onLogin }) {
         try {
             const result = await tryLogin(username.trim(), password);
             if (result.success) {
-                onLogin?.(result.user);
+    const meRes = await fetch("http://localhost:3001/me", {
+        credentials: "include"
+    });
+    const meData = await meRes.json();
+
+    onLogin?.(meData.user);  // 🔥 Now contains isAdmin from session
+
             } else {
                 setError('Virheellinen käyttäjänimi tai salasana.');
             }
@@ -65,7 +72,7 @@ export default function Login({ onLogin }) {
                 aria-labelledby="login-heading"
             >
                 <h1 id="login-heading">
-                    Kirjaudu sisään
+                    Login
                 </h1>
 
                 {error && (
@@ -75,7 +82,7 @@ export default function Login({ onLogin }) {
                 )}
 
                 <div className="mb-4">
-                    <span className="text-sm font-medium">Käyttäjänimi</span>
+                    <span className="text-sm font-medium">Username</span>
                     <input
                         type="text"
                         value={username}
@@ -89,7 +96,7 @@ export default function Login({ onLogin }) {
                 </div>
 
                 <div className="mb-6">
-                    <span className="text-sm font-medium">Salasana</span>
+                    <span className="text-sm font-medium">Password</span>
                     <input
                     
                         type="password"
@@ -108,7 +115,7 @@ export default function Login({ onLogin }) {
                     className="w-full py-2 rounded-xl bg-indigo-600 text-white font-medium disabled:opacity-50"
                     disabled={loading}
                 >
-                    {loading ? 'Kirjaudutaan...' : 'Kirjaudu'}
+                    {loading ? 'Logging...' : 'Login'}
                 </button>
 
             </form>

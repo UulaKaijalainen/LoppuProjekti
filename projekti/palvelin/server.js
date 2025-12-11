@@ -9,19 +9,30 @@ import bcrypt from 'bcrypt'
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // must match your React app
+  credentials: true,               // allow cookies
+  methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+// Preflight requests
+app.options(/.*/, cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
 console.log(process.env.DB_HOST,  process.env.DB_USER, process.env.DB_NAME, process.env.PORT);
 
 
 app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false,
-        maxAge: 24 * 60 * 60 * 1000 
-    }
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // must be false for http
+    maxAge: 24 * 60 * 60 * 1000
+  }
 }));
 
 const db = mariadb.createPool({
@@ -41,45 +52,45 @@ app.get('/', (req, res) => {
 
 });
 
-app.post('/register', async (req, res)=>{
-    console.log('Registration request body:', req.body);
-    const {username, password, confirmPassword, email, age, city} = req.body;
+app.post('/register', async (req, res) => {
+  const { username, password, confirmPassword, email, age, city } = req.body;
 
-    if (!username || !email || !password || !confirmPassword || !age || !city) {
-        return res.status(400).json({ error: 'Missing required fields' });
+  if (!username || !email || !password || !confirmPassword || !age || !city) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
+
+  if (username.length < 3 || password.length < 6 || !email.includes('@') || age < 13 || city.length < 2) {
+    return res.status(400).json({ message: 'Invalid data provided' });
+  }
+
+  try {
+    const rows = await db.query('SELECT id FROM users WHERE username = ? OR email = ?', [username, email]);
+    if (rows.length > 0) {
+      return res.status(409).json({ error: 'Username or email already exists' });
     }
 
-    if(password !== confirmPassword){
-        return res.status(400).json({message: 'Passwords do not match'});
-    }
-    if (username.length < 3 || password.length < 6 || !email.includes('@') || age < 13 || city.length < 2) {
-        return res.status(400).json({message: 'Invalid data provided'});
-    }
+    const passwordHash = await bcrypt.hash(password, 10);
 
-    try {
-        const rows = await db.query('SELECT id FROM users WHERE username = ? OR email = ?', [username, email]);
-        console.log('Existing user check rows:', rows);
-        if (rows.length > 0) {
-            return res.status(409).json({ error: 'Username or email already exists' });
-        }
-          const passwordHash = await bcrypt.hash(password, 10);
-          console.log('hash toimii',passwordHash)
-        const [result] = await db.query(
-            'INSERT INTO users (username, password_hash, email, age, city, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
-            [username, passwordHash, email, age, city]
-        );
+    const result = await db.query(
+  'INSERT INTO users (username, password_hash, email, age, city, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
+  [username, passwordHash, email, Number(age), city]
+);
 
-
-        res.status(201).json({message: 'User registered successfully', id: result.insertId});
-    }catch(err){
-        console.error('Registration error:', err);
-        res.status(500).json({error: 'Internal server error'});
-        }
-
-    
-
+// Convert insertId to Number (or string)
+res.status(201).json({
+  message: 'User registered successfully',
+  id: Number(result.insertId), // ← convert BigInt to Number
+  navigateTo: '/login'
 });
-
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 app.get('/login', async (req, res) => {
@@ -89,14 +100,16 @@ app.get('/login', async (req, res) => {
     // Login
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  
+
   if (!username || !password) {
     return res.status(400).json({ error: "Username and password are required" });
   }
 
   try {
-    // Get user from database
-    const rows = await db.query("SELECT id, username, password_hash FROM users WHERE username = ?",[username]);
+    const rows = await db.query(
+      "SELECT id, username, password_hash, isAdmin FROM users WHERE username = ?",
+      [username]
+    );
 
     if (!rows || rows.length === 0) {
       return res.status(401).json({ error: "Invalid username or password" });
@@ -109,17 +122,23 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid username or password" });
     }
 
-    const user = { id: userRow.id, username: userRow.username };
-    return res.json({ user });
+    // ⭐ SAVE TO SESSION ⭐
+    req.session.user = {
+      id: userRow.id,
+      username: userRow.username,
+      isAdmin: userRow.isAdmin === 1
+    };
 
-    
-    
-    }
-   catch (err) {
-    console.error('Login error:', err);
+    console.log("SESSION USER:", req.session.user);
+
+    res.json({ user: req.session.user });
+
+  } catch (err) {
+    console.error("Login error:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 app.get('/confessions', async (req, res) => {
@@ -174,24 +193,22 @@ const score = Number(scoreResult[0]?.score) || 0;
 
 app.post('/confessions', async (req, res) => {
   const { username, confession } = req.body;
-  console.log(username, confession);
   
 
   if (!username || !confession) {
     return res.status(400).json({ error: 'Confessio puuttuu' });
   }
 
-  try{
-
-const result = await db.query(
+  try {
+    const result = await db.query(
       'INSERT INTO confessions (username, confession, upvote, downvote, created_at) VALUES (?, ?, 0, 0, NOW())',
-            [username, confession]
-        );
-        res.status(201).json({message: 'Confessio lähetetty onnistuneesti', id: result.insertId.toString()});
-    }catch(err){
-        console.error('Confession lähetys epäonnistui', err);
-        res.status(500).json({error: 'Server errori ;C'});
-        }
+      [username, confession]
+    );
+    res.status(201).json({ message: 'Confessio lähetetty onnistuneesti', id: result.insertId.toString() });
+  } catch (err) {
+    console.error('Confession lähetys epäonnistui', err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 app.post('/confessions/:id/upvote', async (req, res) => {
@@ -319,6 +336,37 @@ app.get('/votes/:confessionId/:userId', async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+
+ 
+// Delete confession by ID (admin only)
+app.delete('/confessions/:id', async (req, res) => {
+    const confessionId = req.params.id;
+    
+        console.log("SESSION USER IN DELETE:", req.session.user);
+    if (!req.session.user || req.session.user.isAdmin !== true) {
+        return res.status(403).json({ error: "Forbidden: Admins only" });
+    }
+
+    try {
+        const result = await db.query("DELETE FROM confessions WHERE id = ?", [confessionId]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Confession not found" });
+        }
+        res.json({ message: "Confession deleted" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+app.get('/me', (req, res) => {
+  if (req.session.user) {
+    res.json({ user: req.session.user });
+  } else {
+    res.status(401).json({ error: "Not logged in" });
+  }
+});
+
+
 
 const PORT = process.env.PORT1 || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

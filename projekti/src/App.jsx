@@ -1,71 +1,79 @@
-import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import './styles/Tyyli.css';
-import './styles/Welcome.css';
-
-import Register from './Register.jsx';
-import Login from './Login.jsx';
-import Confessions from './Confessions.jsx';
-import Foorumi from './Foorumi.jsx';
-import Welcome from './Welcome.jsx';
+import Login from "./Login.jsx";
+import Register from "./Register.jsx";
+import Confessions from "./Confessions.jsx";
+import Foorumi from "./Foorumi.jsx";
+import Welcome from "./Welcome.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 function App() {
-  const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('user')) || null;
-    } catch {
-      return null;
-    }
-  });
-
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Login handler
+  // 🔥 Load user from session cookie on page load
+  useEffect(() => {
+    fetch("http://localhost:3001/me", {
+      credentials: "include"   // IMPORTANT
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.user) setUser(data.user);
+      });
+  }, []);
+
+  // Called by Login.jsx
   const handleLogin = (userObj) => {
     setUser(userObj);
-    localStorage.setItem('user', JSON.stringify(userObj));
     navigate("/welcome");
   };
 
-  // Logout handler
   const handleLogout = () => {
+
     setUser(null);
-    localStorage.removeItem('user');
     navigate("/login");
   };
 
   return (
     <>
       <nav>
-        <Link to="/login">Kirjaudu</Link> | <Link to="/register">Rekisteröidy</Link>
+        <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
 
         {user ? (
-          <button onClick={handleLogout}>Kirjaudu ulos</button>
+          <button onClick={handleLogout}>Logout</button>
         ) : (
-          <span>Et ole kirjautunut sisään.</span>
+          <span>You are not logged in</span>
         )}
       </nav>
 
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-
-        <Route
-          path="/welcome"
-          element={user ? <Welcome user={user} /> : <Navigate to="/login" replace />}
-        />
-
-        <Route
-          path="/confessions"
-          element={user ? <Confessions user={user} /> : <Navigate to="/login" replace />}
-        />
+        <Route path="/" element={<Navigate to="/login" />} />
 
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
 
         <Route
+          path="/welcome"
+          element={
+            user ? <Welcome user={user} /> : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
+          path="/confessions"
+          element={
+            user ? <Confessions user={user} /> : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
           path="/foorumi"
-          element={user ? <Foorumi user={user} /> : <Navigate to="/login" replace />}
+          element={
+            <ProtectedRoute isAllowed={!!user} redirectPath="/login">
+              <Foorumi user={user} isAdmin={user?.isAdmin} />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </>
